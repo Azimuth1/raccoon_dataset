@@ -14,7 +14,7 @@ from __future__ import absolute_import
 import os
 import io
 import pandas as pd
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 from PIL import Image
 from object_detection.utils import dataset_util
@@ -29,10 +29,10 @@ FLAGS = flags.FLAGS
 
 # TO-DO replace this with label map
 def class_text_to_int(row_label):
-    if row_label == 'raccoon':
+    if row_label == 'class_530':
         return 1
     else:
-        None
+        return 0
 
 
 def split(df, group):
@@ -58,13 +58,18 @@ def create_tf_example(group, path):
     classes = []
 
     for index, row in group.object.iterrows():
+        #print('row: ', row)
         xmins.append(row['xmin'] / width)
         xmaxs.append(row['xmax'] / width)
         ymins.append(row['ymin'] / height)
         ymaxs.append(row['ymax'] / height)
         classes_text.append(row['class'].encode('utf8'))
+        #print('row[class]: ', row['class'])
+        #print('class_text_to_int(row[class]): ', class_text_to_int(row['class']))
         classes.append(class_text_to_int(row['class']))
 
+    #print('classes: ', classes)
+    #print('dataset_util.int64_list_feature(classes): ', dataset_util.int64_list_feature(classes) )
     tf_example = tf.train.Example(features=tf.train.Features(feature={
         'image/height': dataset_util.int64_feature(height),
         'image/width': dataset_util.int64_feature(width),
@@ -87,9 +92,18 @@ def main(_):
     path = os.path.join(FLAGS.image_dir)
     examples = pd.read_csv(FLAGS.csv_input)
     grouped = split(examples, 'filename')
+    #print('path: ', path)
+    i = 0
     for group in grouped:
+        #print('group: ', group)
+        i = i+1
+
         tf_example = create_tf_example(group, path)
+        #print('tf_example: ', tf_example)
         writer.write(tf_example.SerializeToString())
+        #print('tf_example.SerializeToString(): ', tf_example.SerializeToString())
+        if i>2:
+            break
 
     writer.close()
     output_path = os.path.join(os.getcwd(), FLAGS.output_path)
