@@ -57,7 +57,7 @@ labelMap = {'unknown obstruction': 1,
  'Storage Structure': 25}
 
 def class_text_to_int(row_label):
-    return = labelMap[row_label]
+    return labelMap[row_label]
 
 def split(df, group):
     data = namedtuple('data', ['filename', 'object'])
