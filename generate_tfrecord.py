@@ -27,13 +27,37 @@ flags.DEFINE_string('image_dir', '', 'Path to images')
 FLAGS = flags.FLAGS
 
 
-# TO-DO replace this with label map
-def class_text_to_int(row_label):
-    if row_label == 'class_530':
-        return 1
-    else:
-        return 0
 
+
+# TO-DO replace this with label map
+labelMap = {'unknown obstruction': 1,
+ 'Tank (Water Tower)': 2,
+ 'Misc Man-Made': 3,
+ 'Sign': 4,
+ 'Lighthouse': 5,
+ 'Building (Church)': 6,
+ 'Stadium': 7,
+ 'Amusement Park Structure': 8,
+ 'Building': 9,
+ 'Industrial Structure': 10,
+ 'Building (Steeple)': 11,
+ 'Industrial Plant': 12,
+ 'Pylon': 13,
+ 'Windmill': 14,
+ 'Aerial Cable': 15,
+ 'Transportation': 16,
+ 'Crane': 17,
+ 'Tank (Gasholder)': 18,
+ 'Tank': 19,
+ 'Tower': 20,
+ 'Tower (Mast)': 21,
+ 'Tower (Monument)': 22,
+ 'Smokestack': 23,
+ 'Bridge': 24,
+ 'Storage Structure': 25}
+
+def class_text_to_int(row_label):
+    return = labelMap[row_label]
 
 def split(df, group):
     data = namedtuple('data', ['filename', 'object'])
