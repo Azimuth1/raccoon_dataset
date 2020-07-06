@@ -15,6 +15,7 @@ import os
 import io
 import pandas as pd
 import tensorflow.compat.v1 as tf
+import json
 
 from PIL import Image
 from object_detection.utils import dataset_util
@@ -30,31 +31,14 @@ FLAGS = flags.FLAGS
 
 
 # TO-DO replace this with label map
-labelMap = {'unknown obstruction': 1,
- 'Tank (Water Tower)': 2,
- 'Misc Man-Made': 3,
- 'Sign': 4,
- 'Lighthouse': 5,
- 'Building (Church)': 6,
- 'Stadium': 7,
- 'Amusement Park Structure': 8,
- 'Building': 9,
- 'Industrial Structure': 10,
- 'Building (Steeple)': 11,
- 'Industrial Plant': 12,
- 'Pylon': 13,
- 'Windmill': 14,
- 'Aerial Cable': 15,
- 'Transportation': 16,
- 'Crane': 17,
- 'Tank (Gasholder)': 18,
- 'Tank': 19,
- 'Tower': 20,
- 'Tower (Mast)': 21,
- 'Tower (Monument)': 22,
- 'Smokestack': 23,
- 'Bridge': 24,
- 'Storage Structure': 25}
+
+with open('./../config.json') as json_file:
+    config = json.load(json_file)
+runName = config['runName']
+runDir = './../data/' + runName + '/'
+
+with open(runDir + 'labelMap.json') as labelMapJsonFile:
+    labelMap = json.load(labelMapJsonFile)
 
 def class_text_to_int(row_label):
     return labelMap[row_label]
