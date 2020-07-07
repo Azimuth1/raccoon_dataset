@@ -101,17 +101,13 @@ def main(_):
     examples = pd.read_csv(FLAGS.csv_input)
     grouped = split(examples, 'filename')
     #print('path: ', path)
-    i = 0
     for group in grouped:
         #print('group: ', group)
-        i = i+1
 
         tf_example = create_tf_example(group, path)
         #print('tf_example: ', tf_example)
         writer.write(tf_example.SerializeToString())
         #print('tf_example.SerializeToString(): ', tf_example.SerializeToString())
-        if i>2:
-            break
 
     writer.close()
     output_path = os.path.join(os.getcwd(), FLAGS.output_path)
