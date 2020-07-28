@@ -101,13 +101,19 @@ def main(_):
     examples = pd.read_csv(FLAGS.csv_input)
     grouped = split(examples, 'filename')
     #print('path: ', path)
+    imagesPassed = 0
     for group in grouped:
-        #print('group: ', group)
-
-        tf_example = create_tf_example(group, path)
-        #print('tf_example: ', tf_example)
-        writer.write(tf_example.SerializeToString())
-        #print('tf_example.SerializeToString(): ', tf_example.SerializeToString())
+        
+        try:
+            #print('group: ', group)
+            tf_example = create_tf_example(group, path)
+            #print('tf_example: ', tf_example)
+            writer.write(tf_example.SerializeToString())
+            #print('tf_example.SerializeToString(): ', tf_example.SerializeToString())
+        except:
+            imagesPassed += 1
+            print('group: ', group, ' had an error... passing over image')
+            print('imagesPassed: ', imagesPassed)
 
     writer.close()
     output_path = os.path.join(os.getcwd(), FLAGS.output_path)
