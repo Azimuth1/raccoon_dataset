@@ -110,11 +110,12 @@ def main(_):
             #print('tf_example: ', tf_example)
             writer.write(tf_example.SerializeToString())
             #print('tf_example.SerializeToString(): ', tf_example.SerializeToString())
+            
         except:
             imagesPassed += 1
             print('group: ', group, ' had an error... passing over image')
             print('imagesPassed: ', imagesPassed)
-
+        
     writer.close()
     output_path = os.path.join(os.getcwd(), FLAGS.output_path)
     print('Successfully created the TFRecords: {}'.format(output_path))
