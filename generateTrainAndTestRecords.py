@@ -15,8 +15,6 @@ if __name__ == "__main__":
     with open("./../config.json") as json_file:
         config = json.load(json_file)
 
-    config_original = copy.deepcopy(config)
-
     config["runName"] = args.run_name
 
     with open("./../config.json", "w") as json_file:
@@ -30,6 +28,3 @@ if __name__ == "__main__":
 
     os.system(trainingCall)
     os.system(testingCall)
-
-    with open("./../config.json", "w") as json_file:
-        json.dump(config_original, json_file)
