@@ -20,6 +20,7 @@ import json
 from PIL import Image
 from object_detection.utils import dataset_util
 from collections import namedtuple, OrderedDict
+from tqdm import tqdm
 
 flags = tf.app.flags
 flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
@@ -102,7 +103,7 @@ def main(_):
     grouped = split(examples, 'filename')
     #print('path: ', path)
     imagesPassed = 0
-    for group in grouped:
+    for group in tqdm(grouped):
         
         try:
             #print('group: ', group)
