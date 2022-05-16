@@ -21,6 +21,16 @@ from PIL import Image
 from object_detection.utils import dataset_util
 from collections import namedtuple, OrderedDict
 from tqdm import tqdm
+import pathlib
+
+root_path = str(pathlib.Path(__file__).parent.resolve()) + "/../../../"
+configs_path = root_path + "src/configs/"
+main_data_path = root_path + "src/data/"
+with open(configs_path + "config.json") as json_file:
+    config = json.load(json_file)
+
+runName = config["runName"]
+runDir = main_data_path + runName + "/"
 
 flags = tf.app.flags
 flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
@@ -31,12 +41,9 @@ FLAGS = flags.FLAGS
 
 
 
-# TO-DO replace this with label map
 
-with open('./../config.json') as json_file:
-    config = json.load(json_file)
 runName = config['runName']
-runDir = './../data/' + runName + '/'
+runDir = main_data_path + runName + '/'
 
 with open(runDir + 'labelMap.json') as labelMapJsonFile:
     labelMap = json.load(labelMapJsonFile)
